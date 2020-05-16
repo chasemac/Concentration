@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  ConcentrationViewController.swift
 //  Concentration
 //
 //  Created by Chase McElroy on 5/12/20.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ConcentrationViewController: UIViewController {
     
     private lazy var game = Concentration(numberOfPairsOfCards: numberOfPairsOfCards)
     
@@ -22,7 +22,7 @@ class ViewController: UIViewController {
     
     let attributes: [NSAttributedString.Key: Any] = [
         .strokeWidth: 5.0,
-        .strokeColor: UIColor.orange
+        .strokeColor: UIColor.blue
     ]
     
     @IBAction func createNewGame(_ sender: UIButton) {
@@ -58,16 +58,25 @@ class ViewController: UIViewController {
     }
     
     private func updateViewFromModel() {
+        guard cardButtons != nil else {return}
         for index in cardButtons.indices {
             let button = cardButtons[index]
             let card = game.cards[index]
             if card.isFaceUp {
                 button.setTitle(emoji(for: card), for: .normal)
-                button.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+                button.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
             } else {
                 button.setTitle("", for: .normal)
-                button.backgroundColor = card.isMatched ? #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0) : #colorLiteral(red: 1, green: 0.6235294118, blue: 0.03921568627, alpha: 1)
+                button.backgroundColor = card.isMatched ? #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0) : #colorLiteral(red: 0.03921568627, green: 0.5176470588, blue: 1, alpha: 1)
             }
+        }
+    }
+    
+    var theme: String? {
+        didSet {
+            emojiChoices = theme ?? ""
+            emojiDict = [:]
+            updateViewFromModel()
         }
     }
     
